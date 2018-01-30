@@ -1,0 +1,42 @@
+- name: Configure box
+  hosts: all
+  become: true
+  become_method: sudo
+
+  pre_tasks:
+  - name: Install kernel devel packages
+    shell: yum install -y kernel-devel kernel-devel-$(uname -r)
+
+  roles:
+  - andrewrothstein.vagrant
+  - andrewrothstein.virtualbox
+
+  tasks:
+  - name: Enable EPEL repo
+    yum_repository:
+      name: epel
+      description: EPEL yum repo
+      baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+      gpgkey: "https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-{{ ansible_distribution_major_version }}"
+  - name: Install OS packages
+    yum: name={{ item }} state=latest
+    with_items:
+    - git
+    - python-pip
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - python-devel
+    - openssl-devel
+  - name: Add Docker repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    args:
+      creates: /etc/yum.repos.d/docker-ce.repo
+  - name: Install Docker
+    yum:
+      name: docker-ce
+      state: latest
+  - name: Ensure Docker starts at boot
+    service: name=docker enabled=yes state=started
+  - name: Install requirements
+    pip: requirements=/vagrant/requirements.txt

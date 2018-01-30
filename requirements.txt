@@ -1,0 +1,23 @@
+ansible
+molecule
+six>=1.10
+
+pylint
+
+# Improves the performance of Ansible vault
+cryptography
+
+docker-py
+jmespath
+
+pre-commit
+
+# Required for using the Vagrant driver
+python-vagrant
+
+# Ansible lint is included as a dependency by molecule.  ansible-lint
+# is also used by pre-commit to validate the the yaml files of ansible.
+# Unfortunately, these versions of ansible-lint are seen as "independent".
+# Thus, the version of ansible-lint installed or upgraded with molecule
+# should also be entered in the .pre-commit-config.yaml file.
+ansible-lint
