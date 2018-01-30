@@ -1,4 +1,3 @@
 ---
 - src: andrewrothstein.vagrant
-- src: reallyenglish.virtualbox
-- src: andrewrothstein.docker
+- src: andrewrothstein.virtualbox

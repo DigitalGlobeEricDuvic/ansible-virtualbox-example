@@ -1,0 +1,6 @@
+venv
+.vagrant
+.molecule
+.cache
+*.pyc
+.vscode
